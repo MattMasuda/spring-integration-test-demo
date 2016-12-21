@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+	<bean id="transactionManager"
+		class="org.springframework.jms.connection.JmsTransactionManager">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<beans profile="prod">
+		<bean id="connectionFactory"
+			class="org.springframework.jms.connection.CachingConnectionFactory">
+			<property name="targetConnectionFactory">
+				<bean class="com.ibm.mq.jms.MQQueueConnectionFactory">
+					<property name="transportType">
+						<util:constant static-field="com.ibm.mq.jms.JMSC.MQJMS_TP_CLIENT_MQ_TCPIP" />
+					</property>
+					<property name="hostName" value="${mq.hostname}" />
+					<property name="channel" value="${mq.channel}" />
+					<property name="port" value="${mq.port}" />
+				</bean>
+			</property>
+			<property name="sessionCacheSize" value="${mq.session.cachesize}" />
+			<property name="cacheConsumers" value="true" />
+		</bean>
+
+		<bean id="inputQueue" class="com.ibm.mq.jms.MQQueue">
+			<property name="baseQueueName" value="${mq.input.queue}"></property>
+		</bean>
+
+		<bean id="outputQueue" class="com.ibm.mq.jms.MQQueue">
+			<property name="baseQueueName" value="${mq.output.queue}"></property>
+		</bean>
+	</beans>
+
+	<beans profile="test">
+		<amq:broker useJmx="false" persistent="false">
+			<amq:transportConnectors>
+				<amq:transportConnector uri="tcp://localhost:0" />
+			</amq:transportConnectors>
+		</amq:broker>
+
+		<amq:connectionFactory id="connectionFactory"
+			brokerURL="vm://localhost" />
+		<amq:queue id="inputQueue" physicalName="mq.input.queue" />
+		<amq:queue id="outputQueue" physicalName="mq.output.queue" />
+		
+		<bean id="jmsTemplate" 
+			class="org.springframework.jms.core.JmsTemplate">
+			<property name="connectionFactory" ref="connectionFactory"/>
+		</bean>
+	</beans>
+</beans>
