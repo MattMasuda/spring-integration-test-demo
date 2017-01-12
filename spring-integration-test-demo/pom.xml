@@ -46,6 +46,8 @@
 			<scope>test</scope>
 		</dependency>
 		
+		<!-- IBM Websphere MQ Components would go here -->
+		
 		<!-- ActiveMQ for end-to-end integration testing -->
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
