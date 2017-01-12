@@ -37,21 +37,4 @@
 		</bean>
 	</beans>
 
-	<beans profile="test">
-		<amq:broker useJmx="false" persistent="false">
-			<amq:transportConnectors>
-				<amq:transportConnector uri="tcp://localhost:0" />
-			</amq:transportConnectors>
-		</amq:broker>
-
-		<amq:connectionFactory id="connectionFactory"
-			brokerURL="vm://localhost" />
-		<amq:queue id="inputQueue" physicalName="mq.input.queue" />
-		<amq:queue id="outputQueue" physicalName="mq.output.queue" />
-		
-		<bean id="jmsTemplate" 
-			class="org.springframework.jms.core.JmsTemplate">
-			<property name="connectionFactory" ref="connectionFactory"/>
-		</bean>
-	</beans>
 </beans>

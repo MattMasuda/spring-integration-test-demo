@@ -22,7 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class) // SpringRunner.class is shorthand for SpringJUnit4ClassRunner.class
 @SpringBootTest
 @ActiveProfiles("test") // Activate the "test" profile to pull in ActiveMQ instead of IBM MQ
-@ContextConfiguration("classpath:META-INF/spring/spring-integration-context.xml")
+@ContextConfiguration({"classpath:META-INF/spring/spring-integration-context.xml", "classpath:META-INF/spring/test-mq-context.xml"})
 @PropertySource("classpath:application.properties")
 public class SpringIntegrationTestDemoApplicationTests {
 
