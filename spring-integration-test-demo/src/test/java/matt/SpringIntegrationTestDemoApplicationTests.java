@@ -19,13 +19,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class) // SpringRunner.class is shorthand for SpringJUnit4ClassRunner.class
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("test") // Activate the "test" profile to pull in ActiveMQ instead of IBM MQ
 @ContextConfiguration("classpath:META-INF/spring/spring-integration-context.xml")
 @PropertySource("classpath:application.properties")
 public class SpringIntegrationTestDemoApplicationTests {
 
+	// This rule instantiates a new ActiveMQ broker for each test ensuring test independence
 	@Rule
 	public EmbeddedActiveMQBroker broker = new EmbeddedActiveMQBroker();
 
@@ -48,6 +49,7 @@ public class SpringIntegrationTestDemoApplicationTests {
 		jmsTemplate.convertAndSend(inputQueue, "test123");
 		jmsTemplate.setReceiveTimeout(1000);
 		Message received = jmsTemplate.receive(outputQueue);
+		// We are just asserting that we were able to get a message on the output queue
 		assertNotNull(received);
 	}
 
@@ -57,8 +59,8 @@ public class SpringIntegrationTestDemoApplicationTests {
 		jmsTemplate.convertAndSend(inputQueue, input);
 		jmsTemplate.setReceiveTimeout(1000);
 		TextMessage received = (TextMessage) jmsTemplate.receive(outputQueue);
+		// Assert that the message was transformed the way we expect
 		assertEquals(input.toUpperCase(), received.getText());
-	
 	}
 	
 	

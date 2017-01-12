@@ -21,6 +21,7 @@
 	
 	<channel id="inboundChannel"/>
 	
+	<!-- This simple transformer just changes the incoming message text to all uppercase -->
 	<transformer id="transform" 
 		input-channel="inboundChannel" 
 		output-channel="outboundChannel" 

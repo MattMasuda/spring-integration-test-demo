@@ -11,7 +11,7 @@
 		<property name="connectionFactory" ref="connectionFactory" />
 	</bean>
 
-	<beans profile="prod">
+	<beans profile="live">
 		<bean id="connectionFactory"
 			class="org.springframework.jms.connection.CachingConnectionFactory">
 			<property name="targetConnectionFactory">
