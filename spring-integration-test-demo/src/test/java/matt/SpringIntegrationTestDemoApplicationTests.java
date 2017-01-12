@@ -51,6 +51,7 @@ public class SpringIntegrationTestDemoApplicationTests {
 		Message received = jmsTemplate.receive(outputQueue);
 		// We are just asserting that we were able to get a message on the output queue
 		assertNotNull(received);
+		
 	}
 
 	@Test

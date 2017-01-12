@@ -12,6 +12,8 @@
 		
 	<beans:import resource="mq-context.xml"/>
 	
+	<beans:bean id="javaTransform" class="matt.StringTransformer" />
+	
 	<int-jms:message-driven-channel-adapter	id="mdchanneladapter" 
 		channel="inboundChannel"
 		connection-factory="connectionFactory" 
@@ -22,11 +24,12 @@
 	
 	<channel id="inboundChannel"/>
 	
-	<!-- This simple transformer just changes the incoming message text to all uppercase -->
+	<!-- This transformer calls Java code to change the incoming message text to all upper case -->
 	<transformer id="transform" 
 		input-channel="inboundChannel" 
 		output-channel="outboundChannel" 
-		expression="payload.toUpperCase()"/>	
+		ref="javaTransform"
+		method="transformStringToUppercase" />	
 	
 	<channel id="outboundChannel" />
 	
