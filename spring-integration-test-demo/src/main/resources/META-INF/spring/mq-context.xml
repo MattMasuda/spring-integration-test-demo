@@ -10,6 +10,8 @@
 		<property name="connectionFactory" ref="connectionFactory" />
 	</bean>
 
+	<!-- These beans are the IBM MQ client components. -->
+	<!-- They would be used if this application was actually deployed -->
 	<beans profile="live">
 		<bean id="connectionFactory"
 			class="org.springframework.jms.connection.CachingConnectionFactory">
